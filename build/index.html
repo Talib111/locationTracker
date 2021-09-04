@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>live location Tracking system</title>
+</head>
+<body>
+<button id="start">Start</button>
+<button id="stop">Stop</button>
+<h3 style="width: 100vw;height: auto;overflow: hidden;word-wrap: break-word;background-color: lightcyan;"  id="show">location</h3>
+
+
+    <script>
+
+    const start = document.getElementById('start');    
+const stop = document.getElementById('stop');
+var coor_array = [];
+var watchId;
+start.addEventListener('click',()=>{
+   watchId = navigator.geolocation.watchPosition(
+        data =>{
+            console.log(data);
+            coor_array.push(data.coords.latitude);
+            document.getElementById('show').innerHTML=coor_array;
+        },
+        erro => console.log(erro),
+        {
+            enableHighAccuracy: true
+        }
+    );
+});
+
+stop.addEventListener('click',()=>{
+    navigator.geolocation.clearWatch(watchId);
+    console.log('loaction tracking stopped');
+});
+    </script>
+</body>
+</html>

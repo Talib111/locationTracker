@@ -1,0 +1,20 @@
+{
+  "name": "locationTracker",
+  "version": "1.0.0",
+  "description": "live location tracking app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Talib111/locationTracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Talib111/locationTracker/issues"
+  },
+  "homepage": "https://github.com/Talib111/locationTracker#readme"
+}
