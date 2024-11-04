@@ -1,9 +1,10 @@
+<!-- 
 
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Path on Google Maps</title>
+    <title>Enhanced Path on Google Maps</title>
     <style>
         #map {
             height: 500px;
@@ -13,13 +14,16 @@
     <script>
         // Array of coordinates
         const coordinates = [
-            { lat: 23.355374, lng: 85.3606272 },
-            { lat: 23.3554026, lng: 85.3606445 },
-            { lat: 23.3554026, lng: 85.3606445 },
-            { lat: 23.3554056, lng: 85.3606413 },
-            { lat: 23.355449, lng: 85.360678 },
-            { lat: 23.3554013, lng: 85.3606467 },
-            // { lat: 23.3554492, lng: 85.3606775 },
+            { lat: 20.6936255, lng: 77.0083135 },
+            { lat: 20.6935703, lng: 77.0084009 },
+            { lat: 20.715318, lng: 77.0045353 },
+            { lat: 20.6934013, lng: 77.0083621 },
+            { lat: 20.7075004, lng: 77.0083516 },
+            { lat: 20.707476, lng: 77.0083675 },
+            { lat: 20.6762383, lng: 77.0119222 },
+            { lat: 20.6941573, lng: 77.0077265 },
+            { lat: 20.6936593, lng: 77.0080763 },
+            { lat: 20.6933553, lng: 77.0074258 },
         ];
 
         // Initialize the map and add the path
@@ -29,35 +33,58 @@
                 center: coordinates[0],
             });
 
-            // Create a polyline for the path
+            // Create a polyline for the path with custom styles
             const path = new google.maps.Polyline({
                 path: coordinates,
                 geodesic: true,
-                strokeColor: "#FF0000",
-                strokeOpacity: 1.0,
-                strokeWeight: 2,
+                strokeColor: "#1E90FF",     // DodgerBlue color for path
+                strokeOpacity: 0.8,
+                strokeWeight: 4,
+                icons: [{
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        scale: 3,
+                        strokeColor: "#1E90FF"
+                    },
+                    offset: "100%",         // Arrow at the end of the path
+                }]
             });
 
             // Set the polyline on the map
             path.setMap(map);
 
-            // Add a marker at the start point
+            // Add markers for each coordinate point
+            coordinates.forEach((position, index) => {
+                new google.maps.Marker({
+                    position,
+                    map: map,
+                    icon: {
+                        url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+                        scaledSize: new google.maps.Size(20, 20)
+                    },
+                    title: `Point ${index + 1}`
+                });
+            });
+
+            // Add a distinct marker at the start point
             new google.maps.Marker({
                 position: coordinates[0],
                 map: map,
-                label: "Start",  // Label for start point
+                label: "Start",
                 icon: {
-                    url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"  // Green marker for start
+                    url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+                    scaledSize: new google.maps.Size(30, 30)
                 }
             });
 
-            // Add a marker at the end point
+            // Add a distinct marker at the end point
             new google.maps.Marker({
                 position: coordinates[coordinates.length - 1],
                 map: map,
-                label: "End",  // Label for end point
+                label: "End",
                 icon: {
-                    url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"  // Red marker for end
+                    url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                    scaledSize: new google.maps.Size(30, 30)
                 }
             });
         }
@@ -75,9 +102,117 @@
         window.onload = loadGoogleMapsAPI;
     </script>
 </head>
-
 <body>
-    <h3>Path on Google Maps</h3>
+    <h3>Enhanced Path on Google Maps</h3>
+    <div id="map"></div>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enhanced Path on Google Maps</title>
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
+    <script>
+        // Array of coordinates with times
+        const coordinates = [
+            { lat: 20.6936255, lng: 77.0083135, time: "30-10-2024 05:04 PM" },
+            { lat: 20.6935703, lng: 77.0084009, time: "30-10-2024 04:48 PM" },
+            { lat: 20.715318, lng: 77.0045353, time: "30-10-2024 02:47 PM" },
+            { lat: 20.6934013, lng: 77.0083621, time: "30-10-2024 12:42 PM" },
+            { lat: 20.7075004, lng: 77.0083516, time: "29-10-2024 06:50 PM" },
+            { lat: 20.707476, lng: 77.0083675, time: "29-10-2024 06:45 PM" },
+            { lat: 20.6762383, lng: 77.0119222, time: "29-10-2024 10:19 AM" },
+            { lat: 20.6941573, lng: 77.0077265, time: "28-10-2024 04:19 PM" },
+            { lat: 20.6936593, lng: 77.0080763, time: "28-10-2024 04:05 PM" },
+            { lat: 20.6933553, lng: 77.0074258, time: "28-10-2024 03:27 PM" },
+        ];
+
+        // Initialize the map and add the path
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 16,
+                center: coordinates[0],
+            });
+
+            // Create a polyline for the path with custom styles
+            const path = new google.maps.Polyline({
+                path: coordinates,
+                geodesic: true,
+                strokeColor: "#1E90FF",     // DodgerBlue color for path
+                strokeOpacity: 0.8,
+                strokeWeight: 4,
+                icons: [{
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        scale: 3,
+                        strokeColor: "#1E90FF"
+                    },
+                    offset: "100%",         // Arrow at the end of the path
+                }]
+            });
+
+            // Set the polyline on the map
+            path.setMap(map);
+
+            // Add markers for each coordinate point, showing time as title
+            coordinates.forEach((position, index) => {
+                new google.maps.Marker({
+                    position,
+                    map: map,
+                    icon: {
+                        url: "./mcheckpoint.svg",
+                        scaledSize: new google.maps.Size(20, 20)
+                    },
+                    title: `Time: ${position.time}`, // Display time on hover
+                });
+            });
+
+            // Add a distinct marker at the start point
+            new google.maps.Marker({
+                position: coordinates[0],
+                map: map,
+                // label: "Start",
+                icon: {
+                    url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+                    scaledSize: new google.maps.Size(30, 30)
+                },
+                title: `Start Time: ${coordinates[0].time}`, // Show start time on hover
+            });
+
+            // Add a distinct marker at the end point
+            new google.maps.Marker({
+                position: coordinates[coordinates.length - 1],
+                map: map,
+                // label: "End",
+                icon: {
+                    url: "./mend.svg",
+                    scaledSize: new google.maps.Size(30, 30)
+                },
+                title: `End Time: ${coordinates[coordinates.length - 1].time}`, // Show end time on hover
+            });
+        }
+
+        // Load the Google Maps API asynchronously
+        function loadGoogleMapsAPI() {
+            const script = document.createElement("script");
+            script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyA7xsi1TW3eYYccxqyd0T4aQXDRTmzHd8U&callback=initMap";
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
+        }
+
+        // Load Google Maps API when the window loads
+        window.onload = loadGoogleMapsAPI;
+    </script>
+</head>
+<body>
+    <h3>Enhanced Path on Google Maps</h3>
     <div id="map"></div>
 </body>
 </html>
