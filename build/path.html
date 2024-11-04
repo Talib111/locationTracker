@@ -1,0 +1,83 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Path on Google Maps</title>
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
+    <script>
+        // Array of coordinates
+        const coordinates = [
+            { lat: 23.355374, lng: 85.3606272 },
+            { lat: 23.3554026, lng: 85.3606445 },
+            { lat: 23.3554026, lng: 85.3606445 },
+            { lat: 23.3554056, lng: 85.3606413 },
+            { lat: 23.355449, lng: 85.360678 },
+            { lat: 23.3554013, lng: 85.3606467 },
+            // { lat: 23.3554492, lng: 85.3606775 },
+        ];
+
+        // Initialize the map and add the path
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 16,
+                center: coordinates[0],
+            });
+
+            // Create a polyline for the path
+            const path = new google.maps.Polyline({
+                path: coordinates,
+                geodesic: true,
+                strokeColor: "#FF0000",
+                strokeOpacity: 1.0,
+                strokeWeight: 2,
+            });
+
+            // Set the polyline on the map
+            path.setMap(map);
+
+            // Add a marker at the start point
+            new google.maps.Marker({
+                position: coordinates[0],
+                map: map,
+                label: "Start",  // Label for start point
+                icon: {
+                    url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"  // Green marker for start
+                }
+            });
+
+            // Add a marker at the end point
+            new google.maps.Marker({
+                position: coordinates[coordinates.length - 1],
+                map: map,
+                label: "End",  // Label for end point
+                icon: {
+                    url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"  // Red marker for end
+                }
+            });
+        }
+
+        // Load the Google Maps API asynchronously
+        function loadGoogleMapsAPI() {
+            const script = document.createElement("script");
+            script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyA7xsi1TW3eYYccxqyd0T4aQXDRTmzHd8U&callback=initMap";
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
+        }
+
+        // Load Google Maps API when the window loads
+        window.onload = loadGoogleMapsAPI;
+    </script>
+</head>
+
+<body>
+    <h3>Path on Google Maps</h3>
+    <div id="map"></div>
+</body>
+</html>
